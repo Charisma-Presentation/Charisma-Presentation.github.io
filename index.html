@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charisma App Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gemini-output {
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            min-height: 100px;
+            border: 1px solid #e9ecef;
+            line-height: 1.6;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #118AB2;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        
+
+
+
+         .stage-circle {
+            transition: all 0.3s ease-in-out;
+        }
+        .current .stage-circle {
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 4px white, 0 0 0 8px #E5383B;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            70% { transform: scale(1); }
+            100% { transform: scale(0.95); }
+        }
+        .roadmap-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+        #roadmap-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .stage {
+            position: absolute;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .stage-title-ar {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 0.75rem;
+        }
+        .stage-title-en {
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-[#073B4C]">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-black text-[#AD0D17] mb-4">كاريزما Charisma</h1>
+            <p class="text-xl md:text-2xl text-gray-600">التطبيق المتكامل لإدارة وتنظيم خدمة مدارس الأحد</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#06D6A0]">منظومة الخدمة: أدوار متكاملة</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center md:items-stretch gap-4 text-center">
+                <div class="p-6 bg-white rounded-lg shadow-md border-t-4 border-[#118AB2] w-full md:w-1/5">
+                    <p class="text-4xl mb-2">👑</p>
+                    <h3 class="font-bold text-lg">الأب الكاهن</h3>
+                    <p class="text-sm text-gray-500">إشراف كامل وتقارير شاملة</p>
+                </div>
+                <div class="self-center text-2xl text-gray-400 mx-4">➔</div>
+                <div class="p-6 bg-white rounded-lg shadow-md border-t-4 border-[#06D6A0] w-full md:w-1/5">
+                    <p class="text-4xl mb-2">📋</p>
+                    <h3 class="font-bold text-lg">أمين الخدمة</h3>
+                    <p class="text-sm text-gray-500">إدارة الفصول والخدام والمناهج</p>
+                </div>
+                <div class="self-center text-2xl text-gray-400 mx-4">➔</div>
+                <div class="p-6 bg-white rounded-lg shadow-md border-t-4 border-[#FFD166] w-full md:w-1/5">
+                    <p class="text-4xl mb-2">👨‍🏫</p>
+                    <h3 class="font-bold text-lg">الخادم</h3>
+                    <p class="text-sm text-gray-500">تسجيل الحضور ومتابعة المخدومين</p>
+                </div>
+                <div class="self-center text-2xl text-gray-400 mx-4">➔</div>
+                <div class="p-6 bg-white rounded-lg shadow-md border-t-4 border-[#FF6B6B] w-full md:w-1/5">
+                    <p class="text-4xl mb-2">👨‍👩‍👧</p>
+                    <h3 class="font-bold text-lg">ولي الأمر</h3>
+                    <p class="text-sm text-gray-500">متابعة الأبناء والتواصل</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#FFD166]">أدوات قوية لخدمة فعّالة</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-5xl font-black text-[#118AB2]">11</p>
+                    <h3 class="text-xl font-bold mt-2">قسم رئيسي</h3>
+                    <p class="text-gray-500">لتغطية كل جوانب الخدمة</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-5xl font-black text-[#06D6A0]">6</p>
+                    <h3 class="text-xl font-bold mt-2">أدوار مستخدمين</h3>
+                    <p class="text-gray-500">بصلاحيات محددة لكل دور</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-5xl font-black text-[#FFD166]">1</p>
+                    <h3 class="text-xl font-bold mt-2">دقيقة فقط</h3>
+                    <p class="text-gray-500">لتسجيل حضور فصل كامل</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-5xl font-black text-[#FF6B6B]">100%</p>
+                    <h3 class="text-xl font-bold mt-2">بيانات دقيقة</h3>
+                    <p class="text-gray-500">تقارير لحظية لدعم القرار</p>
+                </div>
+            </div>
+        </section>
+
+         <section class="mb-20 text-center">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#A4161A]">ولكن... لماذا اسم "كاريزما"؟</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">بعد كل هذه الميزات، قد تسأل... لماذا هذا الاسم بالتحديد؟</p>
+            <div class="mt-8 bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto border-t-8 border-[#A4161A]">
+                <p class="text-5xl text-[#E5383B] font-black tracking-wider" style="font-family: 'Georgia', serif;">χάρισμα</p>
+                <h3 class="text-3xl font-bold my-4">كاريزما (Charisma)</h3>
+                <p class="text-lg text-gray-700">كلمة يونانية تعني *"الموهبة"* أو *"النعمة المُعطاة"*.</p>
+                <hr class="my-6 w-24 mx-auto border-t-2 border-gray-200">
+                <p class="text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                    لأننا نؤمن أن الخدمة ليست مجرد مهمة، بل هي موهبة إلهية ونعمة تُستخدم لبنيان الكنيسة. "كاريزما" هو الأداة التي تساعد على إطلاق هذه الموهبة، وتحرير الخادم من الأعباء الإدارية ليركز على جوهر خدمته .
+                     "موهبتك في خدمتك ."
+                </p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-right">
+                    <div class="bg-gray-50 p-4 rounded-lg border-r-4 border-[#118AB2]">
+                        <p class="font-bold">رومية 12: 6</p>
+                        <p class="text-base text-gray-600">"فَإِذْ لَنَا مَوَاهِبُ (χαρίσματα) مُخْتَلِفَةٌ بِحَسَبِ النِّعْمَةِ الْمُعْطَاةِ لَنَا..."</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border-r-4 border-[#06D6A0]">
+                        <p class="font-bold">1 كورنثوس 12: 4</p>
+                        <p class="text-base text-gray-600">"فَأَنْوَاعُ مَوَاهِبَ (χαρισμάτων) مَوْجُودَةٌ، وَلكِنَّ الرُّوحَ وَاحِدٌ."</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border-r-4 border-[#FFD166]">
+                        <p class="font-bold">1 بطرس 4: 10</p>
+                        <p class="text-base text-gray-600">"لِيَكُنْ كُلُّ وَاحِدٍ بِحَسَبِ مَا أَخَذَ مَوْهِبَةً (χάρισμα)، يَخْدِمُ بِهَا بَعْضُكُمْ بَعْضًا..."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#EF476F]">✨ ميزات ذكية مدعومة بالذكاء الاصطناعي من Gemini</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                لتمكين الخدام بشكل أكبر، يدمج "كاريزما" قوة Gemini API لتقديم مساعدة ذكية وفورية، مما يوفر الوقت ويعمق أثر الخدمة.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-center mb-4">مُنشئ خطط الدروس</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="lessonTopic" class="block text-sm font-medium text-gray-700">موضوع الدرس</label>
+                            <input type="text" id="lessonTopic" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#118AB2] focus:ring-[#118AB2] sm:text-sm" value="السامري الصالح">
+                        </div>
+                        <div>
+                            <label for="ageGroup" class="block text-sm font-medium text-gray-700">الفئة العمرية</label>
+                            <input type="text" id="ageGroup" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#118AB2] focus:ring-[#118AB2] sm:text-sm" value="ابتدائي (7-9 سنوات)">
+                        </div>
+                    </div>
+                    <button id="generateLessonBtn" class="mt-6 w-full bg-[#06D6A0] text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors">
+                        ✨ توليد خطة الدرس
+                    </button>
+                    <div id="lessonResult" class="gemini-output flex-grow">اضغط على الزر لتوليد خطة درس متكاملة...</div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col">
+                    <h3 class="text-xl font-bold text-center mb-4">مساعد المتابعة الروحية</h3>
+                    <div>
+                        <label for="servantNote" class="block text-sm font-medium text-gray-700">ملاحظة الخادم عن المخدوم</label>
+                        <textarea id="servantNote" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#118AB2] focus:ring-[#118AB2] sm:text-sm">كان بيتر هادئًا اليوم على غير عادته وبدا عليه الحزن.</textarea>
+                    </div>
+                     <button id="getSuggestionBtn" class="mt-6 w-full bg-[#FFD166] text-[#073B4C] font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors">
+                        ✨ اقتراح للمتابعة
+                    </button>
+                    <div id="suggestionResult" class="gemini-output flex-grow">اضغط على الزر للحصول على اقتراح لطيف للمتابعة...</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#118AB2]">جولة داخل التطبيق: شاهدوا الواجهات الرئيسية</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="/image/splash_screen.png" alt="Splash Screen" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">1. شاشة البداية</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Login" alt="Login Screen" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">2. تسجيل الدخول</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Servant%0ADashboard" alt="Servant Dashboard" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">3. لوحة تحكم الخادم</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Attendance%0ASheet" alt="Attendance Sheet" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">4. سجل الحضور</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Student%0AProfile" alt="Student Profile" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">5. ملف المخدوم</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Admin%0ADashboard" alt="Admin Dashboard" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">6. لوحة تحكم الأمين</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Reports" alt="Reports Screen" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">7. التقارير والإحصائيات</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-white p-2 rounded-2xl shadow-lg border border-gray-200">
+                        <img src="https://placehold.co/300x600/F5F3F4/1B1C1D?text=Parent%0AView" alt="Parent View" class="rounded-xl" onerror="this.onerror=null;this.src='https://placehold.co/300x600/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <p class="mt-3 font-bold">8. واجهة ولي الأمر</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#FF6B6B]">تصاميم مقترحة لواجهة تسجيل الحضور</h2>
+            <div class="max-w-md mx-auto space-y-12">
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">التصميم الأول: الشبكي المدمج</h3>
+                    <div class="p-4 bg-white rounded-2xl shadow-lg border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <img class="w-12 h-12 rounded-full ml-4 border-2 border-white shadow" src="https://placehold.co/100x100/FFD166/073B4C?text=P" alt="Avatar" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=??';">
+                            <p class="font-bold text-lg">بيتر مجدي</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-center design-1-options">
+                            <button class="option-btn p-3 rounded-xl bg-gray-100 shadow-sm" data-color="#06D6A0"><span class="text-2xl">⭐</span><span class="block text-xs font-semibold">حاضر بالكامل</span></button>
+                            <button class="option-btn p-3 rounded-xl bg-gray-100 shadow-sm" data-color="#118AB2"><span class="text-2xl">📖</span><span class="block text-xs font-semibold">خدمة فقط</span></button>
+                            <button class="option-btn p-3 rounded-xl bg-gray-100 shadow-sm" data-color="#FFD166"><span class="text-2xl">⛪️</span><span class="block text-xs font-semibold">قداس فقط</span></button>
+                            <button class="option-btn p-3 rounded-xl bg-gray-100 shadow-sm" data-color="#FF6B6B"><span class="text-2xl">❌</span><span class="block text-xs font-semibold">غائب</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">التصميم الثاني: البطاقة الرأسية</h3>
+                    <div class="p-4 bg-white rounded-2xl shadow-lg border border-gray-200 text-center">
+                         <img class="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-white shadow" src="https://placehold.co/100x100/EF476F/FFFFFF?text=K" alt="Avatar" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=??';">
+                         <p class="font-bold text-lg mb-3">كيرلس سمير</p>
+                         <div class="flex justify-center gap-2 design-4-options">
+                            <button class="option-btn p-3 rounded-lg bg-gray-100 flex-1 text-xs" data-color="#06D6A0">⭐<br>كامل</button>
+                            <button class="option-btn p-3 rounded-lg bg-gray-100 flex-1 text-xs" data-color="#118AB2">📖<br>خدمة</button>
+                            <button class="option-btn p-3 rounded-lg bg-gray-100 flex-1 text-xs" data-color="#FFD166">⛪️<br>قداس</button>
+                            <button class="option-btn p-3 rounded-lg bg-gray-100 flex-1 text-xs" data-color="#FF6B6B">❌<br>غائب</button>
+                         </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-center mb-4 text-gray-700">التصميم الثالث: الخلفية الملونة</h3>
+                    <div class="p-4 bg-gray-100 rounded-2xl shadow-lg border border-gray-200 design-5-card">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img class="w-10 h-10 rounded-full ml-3" src="https://placehold.co/100x100/073B4C/FFFFFF?text=M" alt="Avatar" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/ffffff?text=??';">
+                                <p class="font-semibold text-gray-800">مونيكا رأفت</p>
+                            </div>
+                            <div class="flex gap-2 design-5-options">
+                                <button class="option-btn w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-xl" data-color="#06D6A0">⭐</button>
+                                <button class="option-btn w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-xl" data-color="#118AB2">📖</button>
+                                <button class="option-btn w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-xl" data-color="#FFD166">⛪️</button>
+                                <button class="option-btn w-10 h-10 rounded-full bg-white/50 flex items-center justify-center text-xl" data-color="#FF6B6B">❌</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#FF6B6B]">شكل الإعلانات في التطبيق (Mobile UI)</h2>
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl border border-gray-200">
+                <div class="w-full p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-2xl">
+                                ✝️
+                            </div>
+                            <div class="mr-4">
+                                <div class="tracking-wide text-sm text-[#118AB2] font-semibold">إعلان هام من أبونا</div>
+                                <p class="text-xs text-gray-500">لكل خدام الكنيسة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-700 leading-relaxed">
+                        سلام ونعمة،<br>
+                        ندعوكم جميعًا للمشاركة في اليوم الروحي الخاص بالخدام يوم السبت القادم. سيبدأ اليوم بالقداس الإلهي الساعة ٨ صباحًا، يليه يوم مليء بالفقرات الروحية والورش العملية لنمونا جميعًا في الخدمة. حضوركم بركة كبيرة.
+                    </p>
+                    <div class="mt-6">
+                        <img class="w-full rounded-lg object-cover aspect-[3/2]" 
+                         src="/image/Ro7y.jpg" 
+                         alt="صورة اليوم الروحي" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Image+Error';">
+                    </div>
+                    <div class="mt-4 text-xs text-gray-400 text-left">
+                        نشر منذ ساعتين
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#FF6B6B]">رحلة الخادم اليومية: تسجيل الحضور</h2>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="relative border-r-2 border-dashed border-[#118AB2] mr-6">
+                    <div class="mb-8 mr-10">
+                        <div class="absolute -right-4 mt-1 w-8 h-8 bg-[#118AB2] rounded-full flex items-center justify-center text-white font-bold">1</div>
+                        <h3 class="text-lg font-bold">تسجيل الدخول</h3>
+                        <p class="text-gray-600">الدخول لواجهة الخادم الرئيسية.</p>
+                    </div>
+                    <div class="mb-8 mr-10">
+                        <div class="absolute -right-4 mt-1 w-8 h-8 bg-[#06D6A0] rounded-full flex items-center justify-center text-white font-bold">2</div>
+                        <h3 class="text-lg font-bold">اختيار الفصل</h3>
+                        <p class="text-gray-600">الوصول لقائمة المخدومين بالفصل.</p>
+                    </div>
+                    <div class="mb-8 mr-10">
+                        <div class="absolute -right-4 mt-1 w-8 h-8 bg-[#FFD166] rounded-full flex items-center justify-center text-white font-bold">3</div>
+                        <h3 class="text-lg font-bold">تحديد الحاضرين</h3>
+                        <p class="text-gray-600">بضغطة زر بجانب كل اسم.</p>
+                    </div>
+                    <div class="mr-10">
+                        <div class="absolute -right-4 mt-1 w-8 h-8 bg-[#FF6B6B] rounded-full flex items-center justify-center text-white font-bold">4</div>
+                        <h3 class="text-lg font-bold">حفظ وإرسال</h3>
+                        <p class="text-gray-600">يتم تحديث التقارير فوراً.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#118AB2]">الخدمة المبنية على البيانات: التقارير والإحصائيات</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">نمو الحضور خلال العام</h3>
+                    <div class="chart-container">
+                        <canvas id="attendanceTrendChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">متابعة تطور نسبة الحضور شهرياً لاتخاذ قرارات افتقاد فعالة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">توزيع المخدومين على الفصول</h3>
+                    <div class="chart-container">
+                        <canvas id="studentDistributionChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">نظرة شاملة على أعداد المخدومين في كل مرحلة دراسية.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg md:col-span-2">
+                    <h3 class="text-xl font-bold text-center mb-4">نسبة الحضور العامة هذا الأسبوع</h3>
+                    <div class="chart-container h-64 md:h-80 max-h-80">
+                         <canvas id="overallAttendanceChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">مؤشر سريع وفوري لقياس انتظام الخدمة.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg md:col-span-2">
+                    <h3 class="text-xl font-bold text-center mb-4">مقارنة الحضور والغياب بين المراحل</h3>
+                    <div class="chart-container">
+                        <canvas id="attendanceByStageChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">تحليل دقيق لانتظام كل مرحلة على حدة لتوجيه جهود المتابعة.</p>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+                <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#A4161A]">خريطة طريق المشروع</h2>
+             <div class="w-full bg-white rounded-2xl shadow-lg p-8">
+                <div class="w-full overflow-x-auto pb-8">
+                    <div class="roadmap-container" style="min-width: 1200px;">
+                        <canvas id="roadmap-canvas"></canvas>
+                        <div id="stage-1" class="stage flex flex-col items-center text-center w-48">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-[#A4161A] text-white flex items-center justify-center text-5xl mb-4 shadow-lg"><span>💡</span></div>
+                            <h3 class="stage-title-ar text-[#1B1C1D]">الفكرة والهوية</h3><p class="stage-title-en">Idea & Identity</p>
+                        </div>
+                        <div id="stage-2" class="stage flex flex-col items-center text-center w-48">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-[#A4161A] text-white flex items-center justify-center text-5xl mb-4 shadow-lg"><span>🗺️</span></div>
+                            <h3 class="stage-title-ar text-[#1B1C1D]">تدفق المستخدم</h3><p class="stage-title-en">User Flow</p>
+                        </div>
+                        <div id="stage-3" class="stage flex flex-col items-center text-center w-48">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-[#A4161A] text-white flex items-center justify-center text-5xl mb-4 shadow-lg"><span>🏛️</span></div>
+                            <h3 class="stage-title-ar text-[#1B1C1D]">خريطة التطبيق</h3><p class="stage-title-en">Site Map</p>
+                        </div>
+                        <div id="stage-4" class="stage flex flex-col items-center text-center w-48 current">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-[#E5383B] text-white flex items-center justify-center text-5xl mb-4 shadow-lg"><span>🎨</span></div>
+                            <h3 class="stage-title-ar text-[#E5383B]">تصميم الواجهات</h3><p class="stage-title-en">UI/UX Design</p>
+                        </div>
+                        <div id="stage-5" class="stage flex flex-col items-center text-center w-48 opacity-50">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-5xl mb-4 shadow-md"><span>💻</span></div>
+                            <h3 class="stage-title-ar text-gray-500">التطوير والبرمجة</h3><p class="stage-title-en">Development</p>
+                        </div>
+                        <div id="stage-6" class="stage flex flex-col items-center text-center w-48 opacity-50">
+                            <div class="stage-circle w-24 h-24 rounded-full bg-gray-300 text-gray-500 flex items-center justify-center text-5xl mb-4 shadow-md"><span>🚀</span></div>
+                            <h3 class="stage-title-ar text-gray-500">الإطلاق التجريبي</h3><p class="stage-title-en">Beta Launch</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center max-w-2xl mx-auto">
+                    <h4 class="text-2xl font-bold">المرحلة الحالية: تصميم الواجهات (UI/UX Design)</h4>
+                    <p class="text-gray-600 mt-2">انا الآن في مرحلة تحويل الأفكار والخرائط إلى تصميمات بصرية تفاعلية. سيتم تصميم كل شاشة في التطبيق بدقة على برامج مثل Figma، مع التركيز على تقديم تجربة مستخدم سهلة وممتعة تعكس هوية "كاريزما".</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 border-t pt-8">
+            <p class="text-gray-600">&copy; 2025 Charisma App. "موهبتك في خدمتك ."</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        async function callGemini(prompt, resultElementId) {
+            const resultElement = document.getElementById(resultElementId);
+            resultElement.innerHTML = '<div class="loader"></div>';
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: prompt }]
+                }]
+            };
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    resultElement.innerText = text.trim();
+                } else {
+                    resultElement.innerText = 'عذرًا، لم يتمكن الذكاء الاصطناعي من إنشاء رد. يرجى المحاولة مرة أخرى.';
+                }
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                resultElement.innerText = 'حدث خطأ أثناء الاتصال. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.';
+            }
+        }
+
+        document.getElementById('generateLessonBtn').addEventListener('click', () => {
+            const topic = document.getElementById('lessonTopic').value;
+            const ageGroup = document.getElementById('ageGroup').value;
+            const prompt = `أنشئ خطة درس لمدارس الأحد مدتها 15 دقيقة للفئة العمرية "${ageGroup}" حول موضوع "${topic}". يجب أن تتضمن الخطة: مقدمة لجذب الانتباه، نشاط تفاعلي رئيسي، وصلاة ختامية قصيرة.`;
+            callGemini(prompt, 'lessonResult');
+        });
+
+        document.getElementById('getSuggestionBtn').addEventListener('click', () => {
+            const note = document.getElementById('servantNote').value;
+            const prompt = `خادم مدارس أحد كتب الملاحظة التالية عن طفل: "${note}". اقترح طريقة لطيفة وداعمة للخادم للمتابعة مع الطفل أو والديه، مع التركيز على الاطمئنان عليه وليس التحقيق معه.`;
+            callGemini(prompt, 'suggestionResult');
+        });
+
+        function wrapLabels(label) {
+            const maxLength = 16;
+            if (typeof label !== 'string' || label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            if (currentLine.trim().length > 0) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    if (!item) return '';
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    }
+                    return label;
+                }
+            }
+        };
+
+        const chartColors = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            function handleSelection(containerSelector, buttonSelector, isCardBackground = false) {
+                const containers = document.querySelectorAll(containerSelector);
+                containers.forEach(container => {
+                    container.addEventListener('click', function(e) {
+                        const button = e.target.closest(buttonSelector);
+                        if (!button) return;
+
+                        const allOptions = container.querySelectorAll(buttonSelector);
+                        allOptions.forEach(opt => {
+                            opt.classList.remove('selected');
+                            opt.style.backgroundColor = container.closest('.bg-\\[\\#1B1C1D\\]') ? '#4A5568' : '#F3F4F6'; // gray-700 or gray-100
+                            opt.style.color = container.closest('.bg-\\[\\#1B1C1D\\]') ? 'white' : '#1F2937';
+                            opt.style.transform = 'scale(1)';
+                        });
+
+                        button.classList.add('selected');
+                        const color = button.dataset.color;
+
+                        if (isCardBackground) {
+                            const card = container.closest('.design-5-card');
+                            card.style.backgroundColor = color;
+                            card.querySelectorAll('p').forEach(p => p.style.color = 'white');
+                            button.style.backgroundColor = 'rgba(255,255,255,0.3)';
+                        } else {
+                            button.style.backgroundColor = color;
+                            button.style.color = 'white';
+                            button.style.transform = 'scale(1.05)';
+                        }
+                    });
+                });
+            }
+
+            handleSelection('.design-1-options', '.option-btn');
+            handleSelection('.design-4-options', '.option-btn');
+            handleSelection('.design-5-options', '.option-btn', true);
+
+
+
+
+
+            const canvas = document.getElementById('roadmap-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                const container = canvas.parentElement;
+                let animationFrameId;
+                function drawRoadmap() {
+                    canvas.width = container.offsetWidth;
+                    canvas.height = container.offsetHeight;
+                    const width = canvas.width;
+                    const height = canvas.height;
+                    const amplitude = 60; 
+                    const frequency = (Math.PI * 2) / width; 
+                    const verticalCenter = height / 2;
+                    const stages = [
+                        { id: 'stage-1', position: 0.10 }, { id: 'stage-2', position: 0.28 },
+                        { id: 'stage-3', position: 0.46 }, { id: 'stage-4', position: 0.64 },
+                        { id: 'stage-5', position: 0.82 }, { id: 'stage-6', position: 1.00 },
+                    ];
+                    const progressPercentage = 0.64;
+                    const getY = (x) => verticalCenter - amplitude * Math.sin(x * frequency - Math.PI / 2);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, getY(0));
+                    for (let x = 0; x < width; x++) { ctx.lineTo(x, getY(x)); }
+                    ctx.strokeStyle = '#D1D5DB';
+                    ctx.lineWidth = 6;
+                    ctx.lineCap = 'round';
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, getY(0));
+                    for (let x = 0; x < width * progressPercentage; x++) { ctx.lineTo(x, getY(x)); }
+                    ctx.strokeStyle = '#A4161A';
+                    ctx.lineWidth = 6;
+                    ctx.lineCap = 'round';
+                    ctx.stroke();
+
+                    stages.forEach(stageInfo => {
+                        const stageEl = document.getElementById(stageInfo.id);
+                        const effectiveWidth = width * 0.9;
+                        const xOffset = width * 0.05;
+                        const x = (effectiveWidth * (stageInfo.position - 0.1) / 0.9) + xOffset;
+                        const y = getY(x);
+                        stageEl.style.left = `${x}px`;
+                        stageEl.style.top = `${y - 60}px`;
+                    });
+                }
+                window.addEventListener('resize', () => {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = requestAnimationFrame(drawRoadmap);
+                });
+                setTimeout(drawRoadmap, 100);
+            }
+            
+            const defaultChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: "'Cairo', sans-serif",
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: tooltipTitleCallback
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                             font: {
+                                family: "'Cairo', sans-serif",
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                             font: {
+                                family: "'Cairo', sans-serif",
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const attendanceTrendCtx = document.getElementById('attendanceTrendChart');
+            if(attendanceTrendCtx) {
+                new Chart(attendanceTrendCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                        datasets: [{
+                            label: 'نسبة الحضور %',
+                            data: [65, 72, 80, 75, 85, 92],
+                            borderColor: chartColors.blue,
+                            backgroundColor: 'rgba(17, 138, 178, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: defaultChartOptions
+                });
+            }
+
+            const studentDistributionCtx = document.getElementById('studentDistributionChart');
+            if(studentDistributionCtx) {
+                const originalLabels = ['مرحلة الحضانة', 'ابتدائي (1-3)', 'ابتدائي (4-6)', 'مرحلة إعدادي', 'مرحلة ثانوي'];
+                new Chart(studentDistributionCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: originalLabels.map(wrapLabels),
+                        datasets: [{
+                            label: 'عدد المخدومين',
+                            data: [25, 40, 38, 55, 60],
+                            backgroundColor: [
+                                chartColors.red,
+                                chartColors.yellow,
+                                chartColors.green,
+                                chartColors.blue,
+                                chartColors.darkBlue
+                            ],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        ...defaultChartOptions,
+                        plugins: {
+                             ...defaultChartOptions.plugins,
+                             legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            const overallAttendanceCtx = document.getElementById('overallAttendanceChart');
+            if(overallAttendanceCtx) {
+                new Chart(overallAttendanceCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['حاضر', 'غائب'],
+                        datasets: [{
+                            label: 'نسبة الحضور',
+                            data: [88, 12],
+                            backgroundColor: [
+                                chartColors.green,
+                                chartColors.red,
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                           legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: {
+                                        family: "'Cairo', sans-serif",
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: tooltipTitleCallback
+                        }
+                    }
+                });
+            }
+
+            const attendanceByStageCtx = document.getElementById('attendanceByStageChart');
+            if (attendanceByStageCtx) {
+                new Chart(attendanceByStageCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['حضانة', 'ابتدائي', 'إعدادي', 'ثانوي'],
+                        datasets: [
+                            {
+                                label: 'حاضر',
+                                data: [85, 90, 75, 65],
+                                backgroundColor: chartColors.green,
+                            },
+                            {
+                                label: 'غائب',
+                                data: [15, 10, 25, 35],
+                                backgroundColor: chartColors.red,
+                            }
+                        ]
+                    },
+                    options: {
+                        ...defaultChartOptions,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                stacked: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'
+                                    }
+                                }
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        },
+                        plugins: {
+                            ...defaultChartOptions.plugins,
+                            tooltip: {
+                                ...tooltipTitleCallback,
+                                callbacks: {
+                                    ...tooltipTitleCallback.callbacks,
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.x !== null) {
+                                            label += context.parsed.x + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
